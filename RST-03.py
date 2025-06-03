@@ -24,7 +24,7 @@ def game_scene():
     game.render_block()
 
     print("Hello, Enoch!")
-    print("Hello, welcome to the shadow Domain!")
+    print("Hello, welcome to the Shadow Domain!")
 
     # repeat forever, game loop
     while True:
