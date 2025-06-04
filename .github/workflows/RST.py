@@ -60,11 +60,12 @@ def game_scene():
         if keys & ugame.K_DOWN:
             pass
         # update game logic
-
+print("Hello, Enoch!")
+print("Hello, welcome to the shadow Domain!")
         # redraw Sprites
-        game.render_sprites([ship])
+game.render_sprites([ship])
         # makes sure the ship is always on screen
-        game.tick()
+game.tick()
         # This makes sure the ship renders at 60 Hz per frames
 
 
