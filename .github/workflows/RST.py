@@ -60,6 +60,7 @@ def game_scene():
         if keys & ugame.K_DOWN:
             pass
         # update game logic
+        
 print("Hello, Enoch!")
 print("Hello, welcome to the shadow Domain!")
         # redraw Sprites
