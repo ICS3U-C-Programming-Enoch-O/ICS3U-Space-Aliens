@@ -3,72 +3,94 @@
 # Created on: May 14, 2025
 # This program is the "Space-Aliens" Program on the PyBadge
 
+
 import stage
 import ugame
-
 import constants
 
 def game_scene():
-    # this function is the main game game_scene
-
+    # Load image banks for background and sprites
     image_bank_background = stage.Bank.from_bmp16("space_aliens_background.bmp")
-    # sets the backround to image 0 in the image bank
-    # and the sie (10x8 tiles of size 16x16)
     image_bank_sprites = stage.Bank.from_bmp16("space_aliens.bmp")
 
+    # Initialize button states
+    a_button = constants.button_state["button_up"]
+    b_button = constants.button_state["button_up"]
+    start_button = constants.button_state["button_up"]
+    select_button = constants.button_state["button_up"]
+
+    # Prepare sound
+    pew_sound = open("pew.wav", 'rb')
+    sound = ugame.audio
+    sound.stop()
+    sound.mute(False)
+
+    # Create background grid
     background = stage.Grid(image_bank_background, 10, 8)
-    # sets the backround to image 0 in the image bank
-    # and the sie (10x8 tiles of size 16x16)
 
+    # Create player ship sprite
     ship = stage.Sprite(image_bank_sprites, 5, 75, constants.SCREEN_Y - (2 * constants.SPRITE_SIZE))
-    # Sets the 77 tiles to the right and 66 tiles down.
 
+    # Create alien sprite positioned at top-center
+    alien = stage.Sprite(image_bank_sprites, 9,
+                         int(constants.SCREEN_X / 2 - constants.SPRITE_SIZE / 2),
+                         16)
+
+    # Initialize game stage with 60 FPS
     game = stage.Stage(ugame.display, 60)
-    # set the layers, items show up in order
-    game.layers = [ship] + [background]
-    # render the backround and initial location of sprite list
-    # most likely you will only render backround once per scene
+    game.layers = [ship] + [alien] + [background]
     game.render_block()
 
-    # repeat forever, game loop
     while True:
-        # get user input
         keys = ugame.buttons.get_pressed()
 
-        if keys & ugame.K_X:
-            pass
-        if keys & ugame.K_O:
-            pass
-        if keys & ugame.K_START:
-            pass
-        if keys & ugame.K_SELECT:
-            pass
-        if keys & ugame.K_RIGHT:
-            if ship.x <= constants.SCREEN_X - constants.SPRITE_SIZE:
-                ship.move(ship.x + 1, ship.y)
+        # Handle A button press logic for firing
+        if keys & ugame.K_O != 0:
+            if a_button == constants.button_state["button_up"]:
+                a_button = constants.button_state["button_just_pressed"]
+            elif a_button == constants.button_state["button_just_pressed"]:
+                a_button = constants.button_state["button_still_pressed"]
+        else:
+            if a_button == constants.button_state["button_still_pressed"]:
+                a_button = constants.button_state["button_released"]
             else:
-                ship.move(constants.SCREEN_X - constants.SPRITE_SIZE, ship.y)
-       
-        if keys & ugame.K_LEFT:
-            if ship.x >= 0:
-                ship.move(ship.x - 1, ship.y)
-            else:
-                ship.move(0, ship.y)
-               
-        if keys & ugame.K_UP:
-            pass
-        if keys & ugame.K_DOWN:
-            pass
-        # update game logic
-        
-print("Hello, Enoch!")
-print("Hello, welcome to the shadow Domain!")
-        # redraw Sprites
-game.render_sprites([ship])
-        # makes sure the ship is always on screen
-game.tick()
-        # This makes sure the ship renders at 60 Hz per frames
+                a_button = constants.button_state["button_up"]
 
+        # B button placeholder (no action)
+        if keys & ugame.K_X != 0:
+            pass
+
+        # Start button pressed
+        if keys & ugame.K_START != 0:
+            print("Start")
+
+        # Select button pressed
+        if keys & ugame.K_SELECT != 0:
+            print("Select")
+
+        # Move ship right with boundary check
+        if keys & ugame.K_RIGHT != 0:
+            if ship.x < (constants.SCREEN_X - constants.SPRITE_SIZE):
+                ship.move(ship.x + constants.SPRITE_MOVEMENT_SPEED, ship.y)
+
+        # Move ship left with boundary check
+        if keys & ugame.K_LEFT != 0:
+            if ship.x > 0:
+                ship.move(ship.x - constants.SPRITE_MOVEMENT_SPEED, ship.y)
+
+        # Up and Down buttons currently unused
+        if keys & ugame.K_UP != 0:
+            pass
+        if keys & ugame.K_DOWN != 0:
+            pass
+
+        # Play pew sound if A was just pressed
+        if a_button == constants.button_state["button_just_pressed"]:
+            sound.play(pew_sound)
+
+        # Redraw screen and tick clock
+        game.render_block()
+        game.tick()
 
 if __name__ == "__main__":
     game_scene()
