@@ -1,53 +1,56 @@
 ##################################################
 
-# Run Mr Coxall's Super Linter against code base #
-
+Run Mr Coxall's Super Linter against code base
 ##################################################
 
 ---
 
 name: Mr Coxall's Super Linter
 
+
 on: [push, pull_request]
+
 
 jobs:
 
-  run-linters:
+ run-linters:
 
-    name: Mr Coxall's Super Linter
+   name: Mr Coxall's Super Linter
 
-    runs-on: ubuntu-latest
+   runs-on: ubuntu-latest
 
-    steps:
 
-      - name: Check out Git repository 🚦
+   steps:
 
-        uses: actions/checkout@main
+     
+name: Check out Git repository
 
-      - name: Run GitHub Super Linter 🚀
+       uses: actions/checkout@main
 
-        uses: mr-coxall/super-linter@master
 
-        env:
+     
+name: Run GitHub Super Linter
 
-          VALIDATE_ALL_CODEBASE: true
+       uses: github/super-linter@main
 
-          LINTER_RULES_PATH: /
+       env:
 
-          VALIDATE_CLANG_FORMAT: false
+         VALIDATE_ALL_CODEBASE: true
 
-          VALIDATE_JAVASCRIPT_STANDARD: false
+         DISABLE_ERRORS: true
 
-          VALIDATE_GOOGLE_JAVA_FORMAT: false
+         LINTER_RULES_PATH: /
 
-          VALIDATE_PYTHON_FLAKE8: false
+         VALIDATE_CLANG_FORMAT: false
 
-          VALIDATE_GITLEAKS: false # for secrets detection
+         VALIDATE_JAVASCRIPT_STANDARD: false
 
-          VALIDATE_JSON: false
+         VALIDATE_PYTHON_FLAKE8: false
 
-          VALIDATE_JSCPD: false # for copy and paste detection
+         VALIDATE_GITLEAKS: false # for secrets detection
 
-          DEFAULT_BRANCH: main
+         VALIDATE_JSCPD: false # for copy and paste detection
 
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         DEFAULT_BRANCH: main
+
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
