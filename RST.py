@@ -1,3 +1,8 @@
+# /bin/env python3
+# Created by: Enoch O
+# Created on: May 14, 2025
+# This program is a game of space aliens.
+
 import stage
 import ugame
 import time
